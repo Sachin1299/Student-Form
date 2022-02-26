@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Sachin Project
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body background="">
+    <style>
+        body {
+            background-color: aquamarine;
+            
+        }
+        h2{
+            
+            text-align: center;
+        }
+    </style>
+    <div class="container">
+        <h2><b>Student Form</b></h2>
+        <form id="stuForm" method="post">
+            <div class="form-group">
+                <span><label for="studentId">Student ID:</label> <label id="studentIdMsg">
+                    </label></span>
+                <input type="text" class="form-control" name="studentId" id="studentId" placeholder="Enter Student ID"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="studentName">Student Name:</label>
+                <input type="text" class="form-control" id="studentName" placeholder="Enter Student Name" name="studentName">
+            </div>
+            <div class="form-group">
+                <label for="studentEmail">Email:</label>
+                <input type="email" class="form-control" id="studentEmail" placeholder="Enter Student Email"
+                    name="studentEmail">
+            </div>
+            <div class="form-group">
+                <label for="studentContact">Contact No. :</label> 
+                <input type="text" class="form-control" name="studentContact" id="studentContact"
+                    placeholder="Enter Contact Number" >
+            </div>
+            <div class="form-group">
+                <label for="studentAddress">Address:</label>
+                <input type="text" class="form-control" name="studentAddress" id="studentAddress"
+                    placeholder="Enter Student Address" >
+            </div>
+            <input type="button" class="btn btn-primary" id="studentSave" value="Save" onclick="saveStudent();">
+            <input type="button" class="btn btn-primary" id="studentSave" value="Reset" onclick="resetForm()">
+        </form>
+    </div>
+    <script>
+        $("#studentId").focus();
+        function validateAndGetFormData() {
+            var studentIdVar = $("#studentId").val();
+            if (studentIdVar === "") {
+                alert("Student ID Required Value");
+                $("#studentId").focus();
+                return "";
+            }
+            var studentNameVar = $("#studentName").val();
+            if (studentNameVar === "") {
+                alert("Student Name is Required Value");
+                $("#studentName").focus();
+                return "";
+            }
+            var studentEmailVar = $("#studentEmail").val();
+            if (studentEmailVar === "") {
+                alert("Student Email is Required Value");
+                $("#studentEmail").focus();
+                return "";
+            }
+            var studentContactVar = $("#studentContact").val();
+            if (studentContactVar === "") {
+                alert("Student Contact is Required Value");
+                $("#studentContact").focus();
+                return "";
+            }
+            var studentAddressVar = $("#studentAddress").val();
+            if (studentAddressVar === "") {
+                alert("Student Address is Required Value");
+                $("#studentAddress").focus();
+                return "";
+            }
+            var jsonStrObj = {
+                studentId: studentIdVar,
+                studentName: studentNameVar,
+                studentEmail: studentEmailVar,
+                studentContact: studentContactVar,
+                studentAddress: studentAddressVar
+            };
+            return JSON.stringify(jsonStrObj);
+        }
+        // This method is used to create PUT Json request.
+        function createPUTRequest(connToken, jsonObj, dbName, relName) {
+            var putRequest = "{\n"
+                + "\"token\" : \""
+                + connToken
+                + "\","
+                + "\"dbName\": \""
+                + dbName
+                + "\",\n" + "\"cmd\" : \"PUT\",\n"
+                + "\"rel\" : \""
+                + relName + "\","
+                + "\"jsonStr\": \n"
+                + jsonObj
+                + "\n"
+                + "}";
+            return putRequest;
+        }
+        function executeCommand(reqString, dbBaseUrl, apiEndPointUrl) {
+            var url = dbBaseUrl + apiEndPointUrl;
+            var jsonObj;
+            $.post(url, reqString, function (result) {
+                jsonObj = JSON.parse(result);
+            }).fail(function (result) {
+                var dataJsonObj = result.responseText;
+                jsonObj = JSON.parse(dataJsonObj);
+            });
+            return jsonObj;
+        }
+        function resetForm() {
+            $("#studentId").val("")
+            $("#studentName").val("");
+            $("#studentEmail").val("");
+            $("#studentContact").val("");
+            $("#studentAddress").val("");
+            $("#studentId").focus();
+        }
+        function saveStudent() {
+            var jsonStr = validateAndGetFormData();
+            if (jsonStr === "") {
+                return;
+            }
+            var putReqStr = createPUTRequest("90938853|-31948834051684298|90945784",
+                jsonStr, "Student", "info");
+            alert(putReqStr);
+            jQuery.ajaxSetup({ async: false });
+            var resultObj = executeCommand(putReqStr,
+                "http://api.login2explore.com:5577", "/api/iml");
+            alert(JSON.stringify(resultObj));
+            jQuery.ajaxSetup({ async: true });
+            resetForm();
+        }
+    </script>
+</body>
+
+</html>
