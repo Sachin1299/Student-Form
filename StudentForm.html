@@ -16,25 +16,21 @@
     <style>
         body {
             background-color: aquamarine;
-            
+
         }
-        h2{
-            
+
+        h2 {
+
             text-align: center;
         }
     </style>
     <div class="container">
-        <h2><b>Student Form</b></h2>
+        <h2> <b>Student Form</b></h2>
         <form id="stuForm" method="post">
             <div class="form-group">
-                <span><label for="studentId">Student ID:</label> <label id="studentIdMsg">
-                    </label></span>
-                <input type="text" class="form-control" name="studentId" id="studentId" placeholder="Enter Student ID"
-                    required>
-            </div>
-            <div class="form-group">
                 <label for="studentName">Student Name:</label>
-                <input type="text" class="form-control" id="studentName" placeholder="Enter Student Name" name="studentName">
+                <input type="text" class="form-control" id="studentName" placeholder="Enter Student Name"
+                    name="studentName">
             </div>
             <div class="form-group">
                 <label for="studentEmail">Email:</label>
@@ -42,28 +38,28 @@
                     name="studentEmail">
             </div>
             <div class="form-group">
-                <label for="studentContact">Contact No. :</label> 
+                <label for="studentContact">Contact No. :</label>
                 <input type="text" class="form-control" name="studentContact" id="studentContact"
-                    placeholder="Enter Contact Number" >
+                    placeholder="Enter Contact Number">
             </div>
             <div class="form-group">
                 <label for="studentAddress">Address:</label>
                 <input type="text" class="form-control" name="studentAddress" id="studentAddress"
-                    placeholder="Enter Student Address" >
+                    placeholder="Enter Student Address">
             </div>
             <input type="button" class="btn btn-primary" id="studentSave" value="Save" onclick="saveStudent();">
             <input type="button" class="btn btn-primary" id="studentSave" value="Reset" onclick="resetForm()">
+            <h2>OR<br>
+                <a href="C:/Users/DELL/Desktop/Programs/HTML/Update.html">
+                    <input type="button" class="btn btn-primary" id="studentupdate" value="Update Previous Data">
+                </a>
+            </h2>
         </form>
     </div>
+
     <script>
         $("#studentId").focus();
         function validateAndGetFormData() {
-            var studentIdVar = $("#studentId").val();
-            if (studentIdVar === "") {
-                alert("Student ID Required Value");
-                $("#studentId").focus();
-                return "";
-            }
             var studentNameVar = $("#studentName").val();
             if (studentNameVar === "") {
                 alert("Student Name is Required Value");
@@ -89,7 +85,6 @@
                 return "";
             }
             var jsonStrObj = {
-                studentId: studentIdVar,
                 studentName: studentNameVar,
                 studentEmail: studentEmailVar,
                 studentContact: studentContactVar,
@@ -126,12 +121,11 @@
             return jsonObj;
         }
         function resetForm() {
-            $("#studentId").val("")
             $("#studentName").val("");
             $("#studentEmail").val("");
             $("#studentContact").val("");
             $("#studentAddress").val("");
-            $("#studentId").focus();
+            $("#studentName").focus();
         }
         function saveStudent() {
             var jsonStr = validateAndGetFormData();
